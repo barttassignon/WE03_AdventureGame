@@ -2,14 +2,11 @@
 using System;
 using System.Collections.Generic;
 
-namespace WE03_AdventureGame
+namespace WE03_ClassLibrary_AG
 {
     class Program
     {
-        enum Direction
-        {
-            NORTH, EAST, SOUTH, WEST
-        }
+
 
         static void Main(string[] args)
         {
