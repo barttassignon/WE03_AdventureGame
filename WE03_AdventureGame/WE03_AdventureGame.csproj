@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WE03_ClassLibrary_AG\WE03_ClassLibrary_AG.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="ParserLib">
       <HintPath>..\..\..\..\Downloads\ParserLib.dll</HintPath>
     </Reference>

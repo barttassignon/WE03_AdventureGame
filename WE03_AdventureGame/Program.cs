@@ -1,6 +1,8 @@
 ﻿using AdventureLib;
 using System;
 using System.Collections.Generic;
+using WE03_ClassLibrary_AG.Classes;
+using WE03_ClassLibrary_AG.Classes.Items;
 
 namespace WE03_ClassLibrary_AG
 {
@@ -41,6 +43,30 @@ namespace WE03_ClassLibrary_AG
                 }
             }
 
+        }
+
+        private static Game InitGame(string playerName)
+        {
+            Beer beer = new Beer();
+
+            Player player = new Player(playerName, new List<Interfaces.IItem> { beer });
+
+            Room towncentre = new Room { Name = "Towncentre", Description = "The centre of the town. To the left is the local bar and up ahead is the forest." };
+            Room forest = new Room { Name = "Forest", Description = "A darke dense forest. A clearing in the middle reveals a strange wooden door" };
+            forest.Items = new List<Interfaces.IItem> { new Door() };
+
+            Room bar = new Room { Name = "Bar", Description = "The sleaziest, grubbiest bar you've ever seen" };
+            bar.Items = new List<Interfaces.IItem> { new Flower(), new FlowerPot(), new Key() };
+
+            Room seaside = new Room { Name = "Seaside", Description = "A beatiful beach and a sky-blue sea." };
+            seaside.Items = new List<Interfaces.IItem> { new Can() };
+
+            towncentre.AddRoom(ENUMS.Direction.NORTH, forest);
+            towncentre.AddRoom(ENUMS.Direction.WEST, bar);
+            towncentre.AddRoom(ENUMS.Direction.SOUTH, seaside);
+
+            World world = new World(towncentre);
+            return new Game(player, world);
         }
     }
 }
