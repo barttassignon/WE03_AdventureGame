@@ -19,7 +19,7 @@ namespace WE03_ClassLibrary_AG
 
         static void Main()
         {
-            TextInfo testinfo = new CultureInfo("nl-BE", true).TextInfo;
+            TextInfo textInfo = new CultureInfo("nl-BE", true).TextInfo;
             game = InitGame(ReadStringFromConsole("Before you embark on your grand adventure; what is your name? "));
             int headerHeight;
             int prevLeft, prevTop;
@@ -27,7 +27,7 @@ namespace WE03_ClassLibrary_AG
             Console.Clear();
 
 
-
+            // game loop: Zolang spel niet beëindigd is, huidige kamer weergeven en invoer vragen aan speler
             while (!game.GameOver)
             {
                 prevLeft = Console.CursorLeft;
@@ -45,26 +45,34 @@ namespace WE03_ClassLibrary_AG
                 // als er items liggen in kamer deze weergeven
                 if (game.World.CurrentRoom.Items?.Count > 0)
                 {
-
+                    string items = $"You can see: {string.Join(", ", game.World.CurrentRoom.Items)}";
+                    ClearLine(headerHeight, 1 + items.Length / Console.WindowHeight);
+                    Console.ForegroundColor = neutralColor;
+                    Console.WriteLine(items);
+                    Console.ResetColor();
                 }
 
+                Console.WriteLine();
 
-                Console.WriteLine("What do you want to do?");
-                string invoer = Console.ReadLine();
-                List<string> woorden;
-                Parser.ParseCommand(invoer, out woorden);
-                switch (Parser.ParseCommand(invoer, out woorden))
+                if (prevTop != 0) Console.SetCursorPosition(prevLeft, prevTop + 1);
+
+                // invoer vragen en doorgeven aan parser
+                string command = ReadStringFromConsole($"Ok, {textInfo.ToTitleCase(game.Player.Name)}, what next? ");
+                Console.ForegroundColor = highlightColor;
+                Parser.CommandType commandType = Parser.ParseCommand(command, out List<string> keywords);
+
+                switch (commandType)
                 {
                     case Parser.CommandType.Undefined:
                         Console.WriteLine("I don't know what you mean?");
                         break;
                     case Parser.CommandType.Use:
-                        Console.WriteLine("You want to use: " + string.Join(", ", woorden));
+                        // Console.WriteLine("You want to use: " + string.Join(", ", ));
                         break;
                     case Parser.CommandType.Take:
                         break;
                     case Parser.CommandType.Look:
-                        Console.WriteLine("You want to look at: " + string.Join(", ", woorden));
+                        // Console.WriteLine("You want to look at: " + string.Join();
                         break;
                     case Parser.CommandType.Move:
                         break;
