@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using WE03_ClassLibrary_AG.Classes;
 using WE03_ClassLibrary_AG.Classes.Items;
-
+using WE03_ClassLibrary_AG.Interfaces;
 
 namespace WE03_ClassLibrary_AG
 {
@@ -64,10 +64,17 @@ namespace WE03_ClassLibrary_AG
                 switch (commandType)
                 {
                     case Parser.CommandType.Undefined:
-                        Console.WriteLine("I don't know what you mean?");
+                        if (keywords.Contains("Help"))
+                        {
+                            Console.WriteLine("Available commands: use, take, look, move, exit");
+                        }
+                        else
+                        {
+                            Console.WriteLine("I don't know what u mean by that.");
+                        }
                         break;
                     case Parser.CommandType.Use:
-                        // Console.WriteLine("You want to use: " + string.Join(", ", ));
+                        //Console.WriteLine(game.Use(keywords));
                         break;
                     case Parser.CommandType.Take:
                         break;
@@ -101,7 +108,7 @@ namespace WE03_ClassLibrary_AG
             Room towncentre = new Room { Name = "Towncentre", Description = "The centre of the town. To the left is the local bar and up ahead is the forest." };
 
             Room forest = new Room { Name = "Forest", Description = "A darke dense forest. A clearing in the middle reveals a strange wooden door" };
-            forest.Items = new List<Interfaces.IItem> { new Door() };
+            forest.Items = new List<IItem> { new Door() };
 
             Room bar = new Room { Name = "Bar", Description = "The sleaziest, grubbiest bar you've ever seen" };
             bar.Items = new List<Interfaces.IItem> { new Flower(), new FlowerPot(), new Key() };

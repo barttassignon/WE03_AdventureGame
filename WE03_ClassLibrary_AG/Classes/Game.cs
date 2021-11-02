@@ -1,4 +1,6 @@
 ﻿using System;
+using WE03_ClassLibrary_AG.ENUMS;
+using WE03_ClassLibrary_AG.Interfaces;
 
 namespace WE03_ClassLibrary_AG.Classes
 
@@ -27,5 +29,78 @@ namespace WE03_ClassLibrary_AG.Classes
             World = world ?? throw new ArgumentNullException(nameof(world), "It would be rather empty around here without a World...");
         }
 
+
+        public string Take(string itemName)
+        {
+            IItem item = FindItemInRoom(itemName, World.CurrentRoom);
+
+            if (item != null)
+            {
+                if (item is ITakeable)
+                {
+                    World.CurrentRoom.Items.Remove(item);
+                    Player.Inventory.Add(item);
+                    return (item as ITakeable).TakeMessage();
+                }
+                else
+                {
+                    return "I don't want that.";
+                }
+            }
+            else
+            {
+                return $"There's no {itemName}here.";
+            }
+        }
+
+        public static Direction ToDirection(string direction)
+        {
+            switch (direction)
+            {
+                case "up":
+                case "north":
+                    return Direction.NORTH;
+                case "east":
+                case "right":
+                    return Direction.EAST;
+                case "west":
+                case "left":
+                    return Direction.WEST;
+                case "down":
+                case "south":
+                    return Direction.SOUTH;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(direction));
+            }
+
+        }
+
+        private IItem FindItemInInventory(string itemName)
+        {
+            foreach (IItem item in Player.Inventory)
+            {
+                if (item.Names.Contains(itemName))
+                {
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        private static IItem FindItemInRoom(string itemName, Room room)
+        {
+            foreach (IItem roomitem in room.Items)
+            {
+                if (roomitem.Names.Contains(itemName))
+                {
+                    return roomitem;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            return null;
+        }
     }
 }
